@@ -23,7 +23,7 @@ class TestMyOwnNotes(unittest.TestCase):
         "Tear down the test"
         self.driver.quit()
 
-    def test_edit_settings(self):
+    def edit_settings(self):
         "Test editing settings works as expected"
         element = self.driver.find_elements_by_class_name("android.widget.EditText")
         element[0].clear()
@@ -37,7 +37,7 @@ class TestMyOwnNotes(unittest.TestCase):
         element[0].click()
 
 
-    def test_saved_settings(self):
+    def saved_settings(self):
         "Test if saved settings are as expected"
         element = self.driver.find_elements_by_class_name("android.widget.EditText")
         server_address = element[0].text
@@ -46,12 +46,6 @@ class TestMyOwnNotes(unittest.TestCase):
         assert (server_address == "https://cloud.testdroid.com/")
         assert (username == "deepak.bhaskaran@gmail.com")
         assert (password == "password")
-
-    def test_create_note(self):
-        "Test creation of new notes"
-        element = self.driver.find_elements_by_class_name("android.widget.TextView")
-        element[0].click()
-        print element[0].text
 
 
 #---START OF SCRIPT
