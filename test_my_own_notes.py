@@ -27,7 +27,7 @@ class TestMyOwnNotes(unittest.TestCase):
         "Tear down the test"
         self.driver.quit()
 
-    def edit_settings(self):
+    def test_edit_settings(self):
         "Test editing settings works as expected"
         self.driver.find_element_by_name("More options").click()
         self.driver.find_element_by_xpath("//android.widget.ListView[1]/android.widget.LinearLayout[1]").click()
@@ -43,7 +43,7 @@ class TestMyOwnNotes(unittest.TestCase):
         element[0].click()
 
 
-    def saved_settings(self):
+    def test_saved_settings(self):
         "Test if saved settings are as expected"
         self.driver.find_element_by_name("More options").click()
         self.driver.find_element_by_xpath("//android.widget.ListView[1]/android.widget.LinearLayout[1]").click()
