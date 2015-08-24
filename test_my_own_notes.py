@@ -5,6 +5,8 @@ from time import sleep
 
 class TestMyOwnNotes(unittest.TestCase):
     "Class to run tests against the MyOwnNotes app"
+    desired_caps = {}
+
 
     def setUp(self):
         "Setup for the test"
@@ -16,15 +18,19 @@ class TestMyOwnNotes(unittest.TestCase):
         # Returns abs path relative to this file and not cwd
         desired_caps['app'] = "/Users/dbhaskaran/StudioProjects/apps/MyOwnNotes.apk"
         desired_caps['appPackage'] = "org.aykit.MyOwnNotes"
-        desired_caps['appActivity'] = "org.aykit.owncloud_notes.SettingsActivity"
+        #desired_caps['appActivity'] = "org.aykit.owncloud_notes.SettingsActivity"
+        desired_caps['appActivity'] = "org.aykit.owncloud_notes.NoteListActivity"
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+        self.desired_caps =desired_caps
 
     def tearDown(self):
         "Tear down the test"
         self.driver.quit()
 
-    def edit_settings(self):
+    def test_edit_settings(self):
         "Test editing settings works as expected"
+        self.driver.find_element_by_name("More options").click()
+        self.driver.find_element_by_xpath("//android.widget.ListView[1]/android.widget.LinearLayout[1]").click()
         element = self.driver.find_elements_by_class_name("android.widget.EditText")
         element[0].clear()
         element[1].clear()
@@ -37,15 +43,28 @@ class TestMyOwnNotes(unittest.TestCase):
         element[0].click()
 
 
-    def saved_settings(self):
+    def test_saved_settings(self):
         "Test if saved settings are as expected"
+        self.driver.find_element_by_name("More options").click()
+        self.driver.find_element_by_xpath("//android.widget.ListView[1]/android.widget.LinearLayout[1]").click()
+
         element = self.driver.find_elements_by_class_name("android.widget.EditText")
         server_address = element[0].text
         username = element[1].text
         password = element[2].text
+
         assert (server_address == "https://cloud.testdroid.com/")
         assert (username == "deepak.bhaskaran@gmail.com")
         assert (password == "password")
+
+    def test_create_new_note(self):
+        print self.driver.current_activity
+
+        element = self.driver.find_element_by_name("Create new note")
+        element.click()
+        element = self.driver.find_element_by_xpath("//android.view.View[1]/android.widget.FrameLayout[2]/android.widget.ScrollView[1]/android.widget.LinearLayout[1]/android.widget.EditText[1]")
+        element.send_keys("This is a test")
+        self.driver.find_element_by_name("Save note").click()
 
 
 #---START OF SCRIPT
