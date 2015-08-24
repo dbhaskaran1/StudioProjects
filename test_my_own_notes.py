@@ -27,7 +27,7 @@ class TestMyOwnNotes(unittest.TestCase):
         "Tear down the test"
         self.driver.quit()
 
-    def test_edit_settings(self):
+    def edit_settings(self):
         "Test editing settings works as expected"
         self.driver.find_element_by_name("More options").click()
         self.driver.find_element_by_xpath("//android.widget.ListView[1]/android.widget.LinearLayout[1]").click()
@@ -43,7 +43,7 @@ class TestMyOwnNotes(unittest.TestCase):
         element[0].click()
 
 
-    def test_saved_settings(self):
+    def saved_settings(self):
         "Test if saved settings are as expected"
         self.driver.find_element_by_name("More options").click()
         self.driver.find_element_by_xpath("//android.widget.ListView[1]/android.widget.LinearLayout[1]").click()
@@ -65,6 +65,11 @@ class TestMyOwnNotes(unittest.TestCase):
         element = self.driver.find_element_by_xpath("//android.view.View[1]/android.widget.FrameLayout[2]/android.widget.ScrollView[1]/android.widget.LinearLayout[1]/android.widget.EditText[1]")
         element.send_keys("This is a test")
         self.driver.find_element_by_name("Save note").click()
+
+    def test_refresh_note_list(self):
+        element = self.driver.find_element_by_name("synchronize")
+        element.click()
+        self.driver.find_element_by_xpath("//android.view.View[1]/android.widget.FrameLayout[2]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.RelativeLayout[1]").click()
 
 
 #---START OF SCRIPT
