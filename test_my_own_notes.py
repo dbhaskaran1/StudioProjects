@@ -2,23 +2,29 @@ import os
 import unittest
 from appium import webdriver
 from time import sleep
+import ConfigParser
 
 class TestMyOwnNotes(unittest.TestCase):
     "Class to run tests against the MyOwnNotes app"
     desired_caps = {}
+    config_file = ConfigParser.ConfigParser()
 
     def setUp(self):
         "Setup for the test"
+        try:
+            self.config_file.read('./test_my_own_notes.config')
+        except Exception,e:
+            print e.message
+
         desired_caps = {}
-        desired_caps['platformName'] = 'Android'
-        desired_caps['platformVersion'] = '4.4'
-        desired_caps['deviceName'] = 'Android Emulator'
+        desired_caps['platformName'] = self.config_file.get('desired_caps','platformName')
+        desired_caps['platformVersion'] = self.config_file.get('desired_caps','platformVersion')
+        desired_caps['deviceName'] = self.config_file.get('desired_caps','deviceName')
 
         # Returns abs path relative to this file and not cwd
-        desired_caps['app'] = "/Users/dbhaskaran/StudioProjects/apps/MyOwnNotes.apk"
-        desired_caps['appPackage'] = "org.aykit.MyOwnNotes"
-        #desired_caps['appActivity'] = "org.aykit.owncloud_notes.SettingsActivity"
-        desired_caps['appActivity'] = "org.aykit.owncloud_notes.NoteListActivity"
+        desired_caps['app'] = self.config_file.get('desired_caps','app')
+        desired_caps['appPackage'] = self.config_file.get('desired_caps','appPackage')
+        desired_caps['appActivity'] = self.config_file.get('desired_caps','appActivity')
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         self.desired_caps =desired_caps
 
