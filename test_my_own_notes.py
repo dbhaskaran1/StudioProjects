@@ -7,7 +7,6 @@ class TestMyOwnNotes(unittest.TestCase):
     "Class to run tests against the MyOwnNotes app"
     desired_caps = {}
 
-
     def setUp(self):
         "Setup for the test"
         desired_caps = {}
@@ -42,7 +41,6 @@ class TestMyOwnNotes(unittest.TestCase):
         element = self.driver.find_elements_by_class_name("android.widget.ImageView")
         element[0].click()
 
-
     def test_saved_settings(self):
         "Test if saved settings are as expected"
         self.driver.find_element_by_name("More options").click()
@@ -58,8 +56,6 @@ class TestMyOwnNotes(unittest.TestCase):
         assert (password == "password")
 
     def test_create_new_note(self):
-        print self.driver.current_activity
-
         element = self.driver.find_element_by_name("Create new note")
         element.click()
         element = self.driver.find_element_by_xpath("//android.view.View[1]/android.widget.FrameLayout[2]/android.widget.ScrollView[1]/android.widget.LinearLayout[1]/android.widget.EditText[1]")
@@ -71,6 +67,18 @@ class TestMyOwnNotes(unittest.TestCase):
         element.click()
         self.driver.find_element_by_xpath("//android.view.View[1]/android.widget.FrameLayout[2]/android.widget.LinearLayout[1]/android.widget.ListView[1]/android.widget.RelativeLayout[1]").click()
 
+    def test_help_page(self):
+        self.driver.find_element_by_name("More options").click()
+        self.driver.find_element_by_xpath("//android.widget.ListView[1]/android.widget.LinearLayout[2]/android.widget.RelativeLayout[1]/android.widget.TextView[1]").click()
+        help_text = self.driver.find_element_by_xpath("//android.view.View[1]/android.widget.FrameLayout[2]/android.widget.ScrollView[1]/android.widget.LinearLayout[1]/android.widget.TextView[1]").text
+        assert (help_text.startswith("Which URL should I enter"))
+
+    def test_about_page(self):
+        self.driver.find_element_by_name("More options").click()
+        self.driver.find_element_by_xpath("//android.widget.ListView[1]/android.widget.LinearLayout[3]/android.widget.RelativeLayout[1]/android.widget.TextView[1]").click()
+
+        about_text = self.driver.find_element_by_xpath("//android.view.View[1]/android.widget.FrameLayout[2]/android.widget.LinearLayout[1]/android.widget.TextView[1]").text
+        assert (about_text.startswith("MyOwnNotes 1.6"))
 
 #---START OF SCRIPT
 if __name__ == '__main__':
